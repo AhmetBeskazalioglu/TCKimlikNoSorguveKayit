@@ -7,7 +7,6 @@
 
 package com.kraft.client;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +26,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import jakarta.jws.WebMethod;
 import tr.gov.nvi.tckimlik.ws.KPSPublic;
 import tr.gov.nvi.tckimlik.ws.KPSPublicSoap;
 
@@ -51,7 +49,7 @@ public class TcnoSorgulaveKaydet {
 	private long tcKimlikNo;
 	private String ad;
 	private String soyad;
-	private int dogumTarihi;
+	private int tevellüt;
 	private boolean result;
 	private int count;
 
@@ -201,9 +199,9 @@ public class TcnoSorgulaveKaydet {
 					tcKimlikNo = Long.parseLong(txtKimlikno.getText());
 					ad = txtad.getText();
 					soyad = txtsoyad.getText();
-					dogumTarihi = Integer.parseInt(txtdogumTarihi.getText());
+					tevellüt = Integer.parseInt(txtdogumTarihi.getText());
 
-					result = sorgula(tcKimlikNo, ad, soyad, dogumTarihi);
+					result = sorgula(tcKimlikNo, ad, soyad, tevellüt);
 					txtSonuc.setText(result ? "Kişi bulundu!" : "Kişi bulunamadı!");
 
 				}
@@ -283,7 +281,7 @@ public class TcnoSorgulaveKaydet {
 			return;
 		}
 		if (result) {
-			if (sorgulaLocale(tcKimlikNo, ad, soyad, dogumTarihi)) {
+			if (sorgulaLocale(tcKimlikNo, ad, soyad, tevellüt)) {
 				JOptionPane.showMessageDialog(null, "Bu kişi zaten kayıtlı!", "Hata", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else {
@@ -291,7 +289,7 @@ public class TcnoSorgulaveKaydet {
 				ad = buyukHarf(ad);
 				soyad = buyukHarf(soyad);
 				String query = "insert into vatandaslar values(" + tcKimlikNo + ",'" + ad + "','" + soyad + "',"
-						+ dogumTarihi + ")";
+						+ tevellüt + ")";
 				try {
 					statement.executeQuery(query);
 				} catch (SQLException e) {
@@ -310,8 +308,8 @@ public class TcnoSorgulaveKaydet {
 
 	public boolean sorgulaLocale(long tcKimlikNo, String ad, String soyad, int dogumTarihi) {
 
-		String query = "select * from vatandaslar where tckimlikno=" + tcKimlikNo + " and ad='" + ad + "' and soyad='"
-				+ soyad + "' and dogum_tarihi=" + dogumTarihi + ";";
+		String query = "select * from vatandaslar where tcKimlikNo=" + tcKimlikNo + " and ad='" + ad + "' and soyad='"
+				+ soyad + "' and tevellüt=" + dogumTarihi + ";";
 
 		try {
 			connectToDatabase();
@@ -340,7 +338,7 @@ public class TcnoSorgulaveKaydet {
 			column[0] = "Tc Kimlik No";
 			column[1] = "Ad";
 			column[2] = "Soyad";
-			column[3] = "Doğum Tarihi";
+			column[3] = "Tevellüt";
 
 			tableModel.setColumnIdentifiers(column);
 
@@ -349,7 +347,7 @@ public class TcnoSorgulaveKaydet {
 				row[0] = resultSet.getLong("tckimlikno");
 				row[1] = resultSet.getString("ad");
 				row[2] = resultSet.getString("soyad");
-				row[3] = resultSet.getInt("dogum_tarihi");
+				row[3] = resultSet.getInt("tevellüt");
 
 				tableModel.addRow(row);
 			}

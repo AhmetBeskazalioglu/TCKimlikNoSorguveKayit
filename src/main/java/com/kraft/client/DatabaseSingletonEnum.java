@@ -22,9 +22,9 @@ public enum DatabaseSingletonEnum {
 	private DatabaseSingletonEnum() {
 		try {
 			String myDriver = "org.postgresql.Driver";
-			String dbPath = "jdbc:postgresql://localhost:5432/Kraft";
+			String dbPath = "jdbc:postgresql://localhost:5433/anke";
 			Class.forName(myDriver);
-			this.connection = DriverManager.getConnection(dbPath, "postgres", "246399");
+			this.connection = DriverManager.getConnection(dbPath, "postgres", "12345");
 			this.statement = connection.createStatement();
 			System.out.println("Bağlantı Kuruldu!");
 		} catch (ClassNotFoundException | SQLException e) {
